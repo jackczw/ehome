@@ -1,0 +1,8 @@
+string page_show 0x01000000
+media close 0x01000001
+media dian 0x01000002
+media error 0x01000003
+media loading 0x01000004
+media notice 0x01000005
+media ok 0x01000006
+media tips 0x01000007

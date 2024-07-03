@@ -1,0 +1,27 @@
+{
+  "types": "",
+  "keywords": [
+    "mmkv",
+    "key-value",
+    "openHarmony"
+  ],
+  "author": "ohos_tpc",
+  "description": "OpenHarmony环境可以运行的一款小型高效的键值对存储框架",
+  "ohos": {
+    "org": "opensource"
+  },
+  "main": "index.ts",
+  "type": "module",
+  "repository": "https://gitee.com/openharmony-tpc/MMKV",
+  "version": "2.0.3",
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "libmmkv.so": "file:./src/main/cpp/types/libmmkv"
+  },
+  "tags": [
+    "Tool"
+  ],
+  "license": "BSD 3-Clause Modification",
+  "devDependencies": {},
+  "name": "@ohos/mmkv"
+}

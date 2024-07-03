@@ -1,0 +1,11 @@
+[
+  {
+   "Name":"MMKV",
+   "License":"BSD 3-Clause License",
+   "License File":"LICENSE",
+   "Version Number":"v1.2.10",
+   "Owner":"xiafeng@huawei.com",
+   "Upstream URL":"https://github.com/Tencent/MMKV",
+   "Description": "An efficient, small mobile key-value storage framework developed by WeChat. Works on Android, iOS, macOS, Windows, and POSIX."
+  }
+]
