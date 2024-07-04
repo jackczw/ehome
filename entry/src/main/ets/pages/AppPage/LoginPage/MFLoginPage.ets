@@ -89,7 +89,32 @@ struct LoginPage {
         style: {
           bottom: BorderStyle.Solid
         }
+
       })
+
+      Row(){
+        Button('登录',{type:ButtonType.Normal,stateEffect:true})
+          .backgroundColor(0xFF1B8AFF)
+          .layoutWeight(1)
+          .margin({left:24,right:24})
+          .borderRadius(5)
+          .onClick((event: ClickEvent) => {
+
+          })
+      }.width('100%')
+      .height(50)
+      .margin({top:50})
+
+      Blank().layoutWeight(1)
+
+      Row(){
+        Image($r('app.media.MFLoginViewLogo'))
+          .height(16)
+
+      }.alignItems(VerticalAlign.Center)
+      .height(16)
+      .margin({bottom:32})
+
     }
     .width('100%')
     .height('100%')
