@@ -1,15 +1,20 @@
+import {MFMineController} from '../MFPersoncenter/MFMineController'
+import {MFCooperationController} from '../MFCooperation/MFCooperationController'
+import {MFWorkbranchController} from '../MFWorkbranch/MFWorkbranchController'
+
 @Entry
 @Component
 struct MFTabbar {
   @State message: string = 'Hello World';
-  @State currentIndex:number = 0;
+  @State currentIndex:number = 1;
 
   @Builder tabBuilder(title: string, targetIndex: number, selectedImg: Resource, normalImg: Resource) {
     Column() {
       Image(this.currentIndex === targetIndex ? selectedImg : normalImg)
         .size({ width: 25, height: 25 })
       Text(title)
-        .fontColor(this.currentIndex === targetIndex ? '#1698CE' : '#6B6B6B')
+        .fontColor(this.currentIndex === targetIndex ? '#FF3390FF' : '#FF848484')
+        .fontSize(10)
     }
     .width('100%')
     .height(50)
@@ -17,21 +22,24 @@ struct MFTabbar {
   }
 
   build() {
-    Tabs({barPosition:BarPosition.End,index:1}){
+    Tabs({barPosition:BarPosition.End,index:this.currentIndex}){
       TabContent(){
-        Text("协作")
-      }.tabBar('协作')
+        MFCooperationController({message:'协作'});
+      }.tabBar(this.tabBuilder('协作',0,$r("app.media.icon_work"),$r("app.media.icon_work_un")))
 
       TabContent(){
-        Text("工作台")
-      }.tabBar('工作台')
+        MFWorkbranchController({message:'工作台'});
+      }.tabBar(this.tabBuilder('工作台',1,$r("app.media.icon_gongzuotai_use"),$r("app.media.icon_gongzuotai_un")))
 
       TabContent(){
-        Text("我的")
-      }.tabBar('我的')
+        MFMineController({message:'我的'})
+      }.tabBar(this.tabBuilder('我的',2,$r("app.media.icon_my_user"),$r("app.media.icon_my_un")))
     }.vertical(false)
     .barHeight(60)
     .scrollable(false)
     .barMode(BarMode.Fixed)
+    .onChange((index:number)=>{
+      this.currentIndex = index;
+    })
   }
 }
