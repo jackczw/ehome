@@ -1,0 +1,10 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/AppPage/LoginPage/MFLoginPage",
+    "pages/AppPage/LoginPage/MFTabbar",
+    "pages/AppPage/MFPersoncenter/MFMineController",
+    "pages/AppPage/MFCooperation/MFCooperationController",
+    "pages/AppPage/MFWorkbranch/MFWorkbranchController"
+  ]
+}
