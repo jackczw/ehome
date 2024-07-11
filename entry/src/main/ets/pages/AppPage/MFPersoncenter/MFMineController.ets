@@ -3,6 +3,7 @@ import { Touch } from '@ohos.multimodalInput.touchEvent';
 import { DialogUtil } from '@yunkss/eftool';
 import { PullToRefresh } from '@ohos/pulltorefresh';
 import { display } from '@kit.ArkUI';
+import { edgeWidths } from '@ohos.arkui.node';
 
 ///折扣票模型
 class MFZheKouPiaoModel {
@@ -28,6 +29,109 @@ class MFZhangdanLieBiaoModel {
   }
 }
 
+
+///云食堂按钮
+class MFYunShiTangModel {
+  name:string = ''
+  image:Resource = $r('app.media.MFDefault')
+
+  constructor(name:string,image:Resource) {
+    this.name = name;
+    this.image = image;
+  }
+}
+
+
+///预约服务 与我相关模型
+class MFMineAppModel {
+  name:string = ''
+  image:Resource = $r('app.media.MFDefault')
+
+  constructor(name:string,image:Resource) {
+    this.name = name;
+    this.image = image;
+  }
+}
+
+interface  MFFuliFace{
+  a:string,
+  b:string
+  c:string
+}
+
+
+///福利券
+class MFFuliQuanModel {
+  ///1生日券(8提货券)
+  /// 2春节券 3端午券 4中秋券 5电影 6闽南大戏院 7通用券(在类型2节日券底下，业务来维护这是“中秋”还是“春节”，我们根据这个来匹配节日券，然后增加了一个通用的模板)
+  cardType:number = 0
+  //////1待领取 2待绑定 3待使用
+  cardStatus:number = 0
+  pkid:string = ''
+  ///NewYear春节 Lantern元宵 TombSweeping清明 DragonBoat端午 MidAutumn中秋
+  festivalType:string = ''
+
+  getTimeStart:string = ''
+  getTimeEnd:string = ''
+  getTimeDesc:string = ''
+  useTimeStart:string = ''
+  cardLink:string = ''
+  useTimeEnd:string = ''
+  useTimeDesc:string = ''
+
+  cardName:string = ''
+
+  cardBalance:string = ''
+
+  isNeedShowUnReceive:boolean = false
+
+
+  constructor(cardName:string) {
+    this.cardName =cardName;
+  }
+
+  // constructor(
+  //   cardType: number,
+  //   cardStatus:number,
+  //   pkid:string,
+  //   festivalType:string,
+  //
+  //   getTimeStart:string,
+  //   getTimeEnd:string,
+  //   getTimeDesc:string,
+  //   useTimeStart:string,
+  //
+  //   useTimeEnd:string,
+  //   useTimeDesc:string,
+  //   cardLink:string,
+  //   cardName:string,
+  //
+  //   cardBalance:string,
+  //   isNeedShowUnReceive:boolean
+  // ) {
+  //   this.cardType = cardType;
+  //   this.cardStatus = cardStatus;
+  //   this.pkid = pkid;
+  //   this.festivalType = festivalType;
+  //
+  //   this.getTimeStart = getTimeStart;
+  //   this.getTimeEnd = getTimeEnd;
+  //   this.getTimeDesc = getTimeDesc;
+  //   this.useTimeStart = useTimeStart;
+  //
+  //   this.useTimeEnd = useTimeEnd;
+  //   this.useTimeDesc = useTimeDesc;
+  //   this.cardLink = cardLink;
+  //   this.cardName = cardName;
+  //
+  //   this.cardBalance = cardBalance;
+  //   this.isNeedShowUnReceive = isNeedShowUnReceive;
+  //
+  // }
+}
+
+
+
 @Entry
 @Component
 export  struct MFMineController {
@@ -50,10 +154,44 @@ export  struct MFMineController {
     new MFZhangdanLieBiaoModel("谷歌",'googleKey',"https://google.com")
   ]
 
+  @State yunShiTangBt:MFYunShiTangModel[] = [
+    new MFYunShiTangModel('付款',$r('app.media.MFYunShiTangFuKuan')),
+    new MFYunShiTangModel('充值',$r('app.media.MFYunShiTangChongZhi')),
+    new MFYunShiTangModel('流水',$r('app.media.MFYunShiTangLiuShui'))
+  ]
+
+  @State yuyuefuwuArr:MFMineAppModel[] = [
+    new MFMineAppModel('场馆预约',$r('app.media.MFYunShiTangFuKuan')),
+    new MFMineAppModel('健康管理',$r('app.media.MFYunShiTangChongZhi')),
+    new MFMineAppModel('美发馆预约',$r('app.media.MFYunShiTangLiuShui'))
+  ]
+
+  @State yuwoxiangguanArr:MFMineAppModel[] = [
+    new MFMineAppModel('休假申请',$r('app.media.MFYunShiTangFuKuan')),
+    new MFMineAppModel('休假变更',$r('app.media.MFYunShiTangChongZhi')),
+    new MFMineAppModel('不漏刷卡',$r('app.media.MFYunShiTangLiuShui')),
+    new MFMineAppModel('考勤查询',$r('app.media.MFYunShiTangFuKuan')),
+    new MFMineAppModel('人力流程管理',$r('app.media.MFYunShiTangChongZhi')),
+    new MFMineAppModel('调休小时设置',$r('app.media.MFYunShiTangLiuShui')),
+    new MFMineAppModel('放弃年休假',$r('app.media.MFYunShiTangLiuShui')),
+  ]
+
+
+  @State fuliquanArr:MFFuliQuanModel[] = [
+
+    ]
+
   aboutToAppear(): void {
+
+
+
+
     try {
-      let displayclass:display.Display | null = display.getDefaultDisplaySync()
-      // this.screenWidth = displayclass.width;
+      let displayclass:display.Display = display.getDefaultDisplaySync()
+      if(displayclass.width>0){
+        this.screenWidth = displayclass.width;
+      }
+
       console.log("宽度"+this.screenWidth.toString()+JSON.stringify(displayclass));
     }catch (err){
 
@@ -261,6 +399,243 @@ export  struct MFMineController {
       .margin({left:8,right:8,bottom:10})
   }
 
+  ///云食堂
+  @Builder getYunShiGang(){
+    Column(){
+      //第一行
+      Row(){
+        Text("职工云食堂")
+          .fontSize(14)
+          .fontWeight(500)
+          .fontColor(0xd9000000)
+          .layoutWeight(1)
+          .margin({left:16})
+
+
+        Row(){
+          Text("更多")
+            .fontSize(12)
+            .fontWeight(400)
+            .fontColor(0x80000000)
+            .margin({left:16})
+          Image($r('app.media.MFMineYunShiTangArrow'))
+            .height(10)
+            .width(10)
+            .margin({left:2,right:16})
+        }
+        .height("100%")
+        .onTouch((event:TouchEvent)=>{
+          if(event.type == TouchType.Down){
+            DialogUtil.showAlertDialog({msg:'点击更多'})
+          }
+        })
+
+      }
+      .margin({bottom:10})
+      .height(49)
+
+      // 第二行
+      Row(){
+        Column(){
+          Row(){
+            Text("总余额")
+              .fontSize(11)
+              .fontWeight(400)
+              .fontColor(0xff111A34)
+              .margin({left:16,top:3})
+
+            Text("1111")
+              .fontSize(15)
+              .fontWeight(400)
+              .fontColor(0xff111A34)
+              .margin({left:4})
+          }
+          Row(){
+            Blank()
+              .width(4)
+              .height(4)
+              .backgroundColor(0xffFF453A)
+              .margin({left:18})
+              .border({
+                radius:2
+              })
+
+            Text("食堂用餐")
+              .fontSize(11)
+              .fontWeight(400)
+              .fontColor(0xff858B9C)
+              .margin({left:4})
+
+            Text("1111")
+              .fontSize(13)
+              .fontWeight(400)
+              .fontColor(0xff41485D)
+              .margin({left:4})
+          }.alignItems(VerticalAlign.Center)
+          .margin({top:10})
+
+          Row(){
+            Blank()
+              .width(4)
+              .height(4)
+              .backgroundColor(0xff3390FF)
+              .margin({left:18})
+              .border({
+                radius:2
+              })
+
+            Text("个人充值")
+              .fontSize(11)
+              .fontWeight(400)
+              .fontColor(0xff858B9C)
+              .margin({left:4})
+
+            Text("1111")
+              .fontSize(13)
+              .fontWeight(400)
+              .fontColor(0xff41485D)
+              .margin({left:4})
+          }.alignItems(VerticalAlign.Center)
+          .margin({top:4})
+
+        }.border({
+          color:0xffF1F1F3,
+          style:BorderStyle.Solid,
+          width:{right:1}
+        })
+        .alignItems(HorizontalAlign.Start)
+        .width(150)
+        .margin({bottom:19})
+
+        Row(){
+          ForEach(this.yunShiTangBt,(item:MFYunShiTangModel,index:number)=>{
+            Column(){
+              Image(item.image)
+                .width(44)
+                .height(44)
+
+              Text(item.name)
+                .fontSize(11)
+                .fontWeight(400)
+                .fontColor(0xff111A34)
+                .margin({top:8})
+            }.onTouch((event:TouchEvent)=>{
+              if(event.type == TouchType.Down){
+                if(index==0){
+                  DialogUtil.showAlertDialog({msg:'点击付款'})
+                }else if(index==1){
+                  DialogUtil.showAlertDialog({msg:'点击充值'})
+                }else if(index==2){
+                  DialogUtil.showAlertDialog({msg:'点击流水'})
+                }
+              }
+            })
+          })
+        }.alignItems(VerticalAlign.Top)
+        .justifyContent(FlexAlign.SpaceEvenly)
+        .margin({bottom:19})
+        .layoutWeight(1)
+      }
+      // .backgroundColor(Color.Red)
+      .width('100%')
+
+    }.margin({left:8,right:8,bottom:8})
+    .height(140)
+    .alignItems(HorizontalAlign.Start)
+    .backgroundColor(Color.White)
+    .border({
+      radius:4
+    })
+    .shadow({radius:15,color:0x41DBDBDB,offsetY:2})
+    // .width('100%')
+  }
+
+  ///预约服务  与我相关
+  @Builder getYuWoXiangguan(name:string,arr:MFMineAppModel[]){
+      Column(){
+          Text(name)
+            .fontSize(14)
+            .fontWeight(500)
+            .fontColor(0xd9000000)
+            .margin({left:16,top:16})
+          Grid(){
+            ForEach(arr,(item:MFMineAppModel,index:number)=>{
+              GridItem(){
+                  Column(){
+                    Image(item.image)
+                      .width(28)
+                      .height(28)
+                      .margin({bottom:5})
+
+                    Text(item.name)
+                      .fontSize(13)
+                      .fontWeight(400)
+                      .fontColor(0x99000000)
+                  }
+              }.width('25%')
+              .padding({top:12,bottom:8})
+            })
+          }
+          .layoutDirection(GridDirection.Row)
+          .maxCount(4)
+        .width('100%')
+      }.margin({left:8,right:8,bottom:8})
+      .alignItems(HorizontalAlign.Start)
+      .backgroundColor(Color.White)
+      .border({
+        radius:4
+      })
+      .shadow({radius:15,color:0x41DBDBDB,offsetY:2})
+  }
+
+  ///福利券
+  @Builder getFuLiQuan(){
+    Column(){
+      //第一行
+      Row(){
+        Text("福利券")
+          .fontSize(14)
+          .fontWeight(500)
+          .fontColor(0xd9000000)
+          .layoutWeight(1)
+          .margin({left:16})
+
+
+        Row(){
+          Text("更多")
+            .fontSize(12)
+            .fontWeight(400)
+            .fontColor(0x80000000)
+            .margin({left:16})
+          Image($r('app.media.MFMineYunShiTangArrow'))
+            .height(10)
+            .width(10)
+            .margin({left:2,right:16})
+        }
+        .height("100%")
+        .onTouch((event:TouchEvent)=>{
+          if(event.type == TouchType.Down){
+            DialogUtil.showAlertDialog({msg:'点击更多'})
+          }
+        })
+
+      }
+      .margin({bottom:10})
+      .height(49)
+
+      
+
+
+    }.margin({left:8,right:8,bottom:8})
+    .height(140)
+    .alignItems(HorizontalAlign.Start)
+    .backgroundColor(Color.White)
+    .border({
+      radius:4
+    })
+    .shadow({radius:15,color:0x41DBDBDB,offsetY:2})
+  }
+
   @Builder getListView(){
     Scroll(this.scroller){
       Column(){
@@ -268,6 +643,10 @@ export  struct MFMineController {
         this.getZheKouPiao();
         this.getFuliQuanZhiShiQi();
         this.getZhangDanLiebiao();
+        this.getYunShiGang();
+        this.getYuWoXiangguan('预约服务',this.yuyuefuwuArr);
+        this.getYuWoXiangguan('与我相关',this.yuwoxiangguanArr);
+        this.getFuLiQuan();
         // ForEach(this.data,(item:String,index:number)=>{
         //   Text(index.toString())
         //     .fontSize(40)
