@@ -59,13 +59,48 @@ interface  MFFuliFace{
   c:string
 }
 
+///福利券图片model
+class  MFFuliImageModel{
+  logo:ResourceStr
+  background:ResourceStr
+  lingqubt:ResourceStr
+  shiyongbt:ResourceStr
+  color:ResourceColor
+  borderColor:ResourceColor
+  constructor(color:ResourceColor,borderColor:ResourceColor,logo:ResourceStr,background:ResourceStr,lingqubt:ResourceStr,shiyongbt:ResourceStr) {
+    this.color = color;
+    this.borderColor = borderColor;
+    this.logo = logo;
+    this.background = background;
+    this.lingqubt=lingqubt;
+    this.shiyongbt = shiyongbt;
+  }
+}
+
+/*
+  生日，春节，端午，中秋，通用券，提货券
+   * */
+  const jieRiMapResource:MFFuliImageModel[] = [
+  new MFFuliImageModel(0xffFFF0E5,0xffFFC986,$r('app.media.FourDanGaoQuan'),$r('app.media.FourDangaoWei'),$r('app.media.FourDanGaoLingQu'),$r('app.media.FourDanGaoQuanBt')),
+  new MFFuliImageModel(0xffFCE5E5,0xffFF8A86,$r('app.media.FourChunJieFuLiQuan'),$r('app.media.FourChunJieFuLiQuanWei'),$r('app.media.FourChunJieFuLiQuanLingQu'),$r('app.media.FourChunJieFuLiQuanBt')),
+  new MFFuliImageModel(0xffE9FCE5,0xff8AD997,$r('app.media.FourDuanWuQuan'),$r('app.media.FourDuanWuQuanWei'),$r('app.media.FourDuanWuQuanLingQu'),$r('app.media.FourDuanWuQuanBt')),
+  new MFFuliImageModel(0xffFFF5DA,0xffFFD76B,$r('app.media.FourZhongQiuFuLiQuan'),$r('app.media.FourZhongQiuFuLiQuanWei'),$r('app.media.FourZhongQiuFuLiQuanlingQu'),$r('app.media.FourZhongQiuFuLiQuanBt')),
+  new MFFuliImageModel(0xffFFF2E3,0xffFFA78F,$r('app.media.FourTongYongQuan'),$r('app.media.FourTongYongQuanwei'),$r('app.media.FourTongYongQuanLingQu'),$r('app.media.FourTongYongQuanBt')),
+  new MFFuliImageModel(0xffFFEEFF,0xffD7B8FF,$r('app.media.FourTiHuoQuan'),$r('app.media.FourTiHuoQuanwei'),$r('app.media.FourTiHuoQuanlingqu'),$r('app.media.FourTiHuoQuanBt')),
+]
 
 ///福利券
+/*福利券
+ * 1生日券(8提货券)  2春节券 3端午券 4中秋券 5电影 6闽南大戏院 7通用券(在类型2节日券底下，业务来维护这是“中秋”还是“春节”，我们根据这个来匹配节日券，然后增加了一个通用的模板)
+ * */
 class MFFuliQuanModel {
-  ///1生日券(8提货券)
-  /// 2春节券 3端午券 4中秋券 5电影 6闽南大戏院 7通用券(在类型2节日券底下，业务来维护这是“中秋”还是“春节”，我们根据这个来匹配节日券，然后增加了一个通用的模板)
+  /*
+  1生日券(8提货券)  2春节券 3端午券 4中秋券 5电影 6闽南大戏院 7通用券(在类型2节日券底下，业务来维护这是“中秋”还是“春节”，我们根据这个来匹配节日券，然后增加了一个通用的模板)
+   * */
   cardType:number = 0
-  //////1待领取 2待绑定 3待使用
+  /*
+  1待领取 2待绑定 3待使用
+   * */
   cardStatus:number = 0
   pkid:string = ''
   ///NewYear春节 Lantern元宵 TombSweeping清明 DragonBoat端午 MidAutumn中秋
@@ -85,9 +120,32 @@ class MFFuliQuanModel {
 
   isNeedShowUnReceive:boolean = false
 
+  cssdata?:MFFuliImageModel
+  getCssModel(){
+    let count = this.cardType;
+    if(count==7){
+      count = 5
+    }
+    if(count==8){
+      count = 6
+    }
+    count --;
+    if(jieRiMapResource.length > count){
+      return jieRiMapResource[count];
+    }
 
-  constructor(cardName:string) {
-    this.cardName =cardName;
+    return null;
+  }
+  constructor(getTimeStart:string,getTimeEnd:string,useTimeStart:string,useTimeEnd:string,cardName:string,cardType:number=1,cardStatus:number=1,festivalType:string = '春节') {
+    this.cardType = cardType;
+    this.cardStatus = cardStatus;
+    this.festivalType = festivalType;
+    this.getTimeStart = getTimeStart;
+
+    this.getTimeEnd = getTimeEnd;
+    this.useTimeStart = useTimeStart;
+    this.useTimeEnd = useTimeEnd;
+    this.cardName = cardName;
   }
 
   // constructor(
@@ -176,10 +234,25 @@ export  struct MFMineController {
     new MFMineAppModel('放弃年休假',$r('app.media.MFYunShiTangLiuShui')),
   ]
 
-
+  ///1生日券(8提货券)
+  /// 2春节券 3端午券 4中秋券 5电影 6闽南大戏院 7通用券(在类型2节日券底下，业务来维护这是“中秋”还是“春节”，我们根据这个来匹配节日券，然后增加了一个通用的模板)
   @State fuliquanArr:MFFuliQuanModel[] = [
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','生日福利券',1),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','春节福利券',2),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','端午福利券',3),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','中秋福利券',4),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','通用福利券',7),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','提货福利券',8),
 
-    ]
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','生日福利券',1,3),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','春节福利券',2,3,'春节'),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','端午福利券',3,3,'端午'),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','中秋福利券',4,3,'中秋'),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','通用福利券',7,3),
+    new MFFuliQuanModel('2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','2024-7-18 24:00:00','通用福利券',8,3),
+
+  ]
+
 
   aboutToAppear(): void {
 
@@ -623,11 +696,57 @@ export  struct MFMineController {
       .margin({bottom:10})
       .height(49)
 
-      
+      ///福利券列表
+      ForEach(this.fuliquanArr,(item:MFFuliQuanModel,index:number)=>{
+          Stack({alignContent:Alignment.TopStart}){
+            if(item.cardStatus == 1){
+              Row(){
+                Blank().layoutWeight(1)
+                Image(item.getCssModel()?.background)
+                  .width(150)
+                  .height(118)
+                  .zIndex(11)
+                  .offset({x:12})
+              }.width('100%')
+              .height(84)
+            }
+
+              Image(item.getCssModel()?.logo)
+                .width(84)
+                .height(84)
+
+
+              Column(){
+                Text(item.cardName)
+                  .fontSize(16)
+                  .fontWeight(500)
+                  .margin({bottom:6})
+                Text(item.cardStatus == 1?item.getTimeEnd:item.useTimeEnd)
+                  .fontSize(12)
+                  .fontWeight(400)
+              }.alignItems(HorizontalAlign.Start)
+              .justifyContent(FlexAlign.Center)
+                .width('100%')
+                .height(84)
+                .padding({left:78,right:item.cardStatus == 1?150:100})
+                // .backgroundColor(item.getCssModel()?.color)
+                // .border({
+                //   radius:item.cardStatus == 1?0:16,
+                // })
+          }.backgroundColor(item.getCssModel()?.color)
+          .border({
+            width:item.cardStatus == 1?8:0,
+            radius:16,
+            color:item.getCssModel()?.borderColor
+          }).margin({
+            left:16,
+            right:16,
+            bottom:item.cardStatus == 1?20:11
+          })
+      })
 
 
     }.margin({left:8,right:8,bottom:8})
-    .height(140)
     .alignItems(HorizontalAlign.Start)
     .backgroundColor(Color.White)
     .border({
