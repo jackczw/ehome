@@ -5,6 +5,9 @@
     "pages/AppPage/LoginPage/MFTabbar",
     "pages/AppPage/MFPersoncenter/MFMineController",
     "pages/AppPage/MFCooperation/MFCooperationController",
-    "pages/AppPage/MFWorkbranch/MFWorkbranchController"
+    "pages/AppPage/MFWorkbranch/MFWorkbranchController",
+    "pages/AppPage/MFCooperation/MFCooperationVc",
+    "pages/AppPage/MFCooperation/MFCooperationBaiLuVc",
+    "pages/AppPage/MFCooperation/MFCooperationYuGongVc"
   ]
 }
