@@ -8,6 +8,9 @@
     "pages/AppPage/MFWorkbranch/MFWorkbranchController",
     "pages/AppPage/MFCooperation/MFCooperationVc",
     "pages/AppPage/MFCooperation/MFCooperationBaiLuVc",
-    "pages/AppPage/MFCooperation/MFCooperationYuGongVc"
+    "pages/AppPage/MFCooperation/MFCooperationYuGongVc",
+    "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuRecomand",
+    "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuNews",
+    "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuDynamic"
   ]
 }

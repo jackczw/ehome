@@ -1,4 +1,6 @@
-
+import { MFCooperationBaiLuDynamic } from './BaiLu/MFCooperationBaiLuDynamic';
+import { MFCooperationBaiLuNews } from './BaiLu/MFCooperationBaiLuNews';
+import { MFCooperationBaiLuRecomand } from './BaiLu/MFCooperationBaiLuRecomand';
 
 @Entry
 @Component
@@ -56,19 +58,19 @@ export struct MFCooperationBaiLuVc {
 
       Tabs({barPosition:BarPosition.Start,index:this.currentIndex}){
         TabContent(){
-          Text('1')
+          MFCooperationBaiLuRecomand({message:'推荐'})
           // MFCooperationVc({message:'协作'});
         }
         // .tabBar(this.tabBuilder('协作',0))
 
         TabContent(){
-          Text('2')
+          MFCooperationBaiLuNews({message:'新闻'});
           // MFCooperationBaiLuVc({message:'管理'});
         }
         // .tabBar(this.tabBuilder('管理',1))
 
         TabContent(){
-          Text('3')
+          MFCooperationBaiLuDynamic({message:'动态'});
           // MFCooperationYuGongVc({message:'白鹭之窗'})
         }
         // .tabBar(this.tabBuilder('白鹭之窗',2))
