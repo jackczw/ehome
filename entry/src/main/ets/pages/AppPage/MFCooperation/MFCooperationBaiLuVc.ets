@@ -6,11 +6,13 @@ import { MFCooperationBaiLuRecomand } from './BaiLu/MFCooperationBaiLuRecomand';
 @Component
 export struct MFCooperationBaiLuVc {
   @State tabbars:string[] = [
-    '推荐','公司新闻','公司公告'
+    '推荐','公司新闻','动态'
   ]
   @State message: string = 'Hello World';
 
   @State currentIndex:number = 0;
+
+  private  scroller: Scroller = new Scroller();
 
   @Builder tabBuilder(title: string, targetIndex: number) {
     Column() {
@@ -26,29 +28,34 @@ export struct MFCooperationBaiLuVc {
   }
 
   @Builder topbar(){
-    Row({space:12}){
-      ForEach(this.tabbars,(item:string,index:number)=>{
-        Button({buttonStyle:ButtonStyleMode.TEXTUAL,type:ButtonType.Normal}){
-          Text(item)
-            .fontColor(this.currentIndex == index?0xff3390FF:0xff41485D)
-            .fontWeight(400)
-            .fontSize(12)
-            .margin({left:12,right:12})
-        }
-        .backgroundColor(this.currentIndex == index?0x1A3390FF:0xffF7F8FA)
+    Scroll(this.scroller){
+      Row({space:12}){
+        ForEach(this.tabbars,(item:string,index:number)=>{
+          Button({buttonStyle:ButtonStyleMode.TEXTUAL,type:ButtonType.Normal}){
+            Text(item)
+              .fontColor(this.currentIndex == index?0xff3390FF:0xff41485D)
+              .fontWeight(400)
+              .fontSize(12)
+              .margin({left:12,right:12})
+          }
+          .backgroundColor(this.currentIndex == index?0x1A3390FF:0xffF7F8FA)
 
-        .height(28)
-        .border({
-          radius:14
+          .height(28)
+          .border({
+            radius:14
+          })
+          .onClick((event:ClickEvent)=>{
+            this.currentIndex = index;
+          })
         })
-        .onClick((event:ClickEvent)=>{
-          this.currentIndex = index;
-        })
-      })
-    }
-    .width('100%')
-    .height(52)
-    .padding({left:20})
+      }
+      .width('100%')
+      .height(52)
+      .padding({left:20})
+
+    }.scrollable(ScrollDirection.Horizontal)
+    .scrollBar(BarState.Off)
+
 
   }
 

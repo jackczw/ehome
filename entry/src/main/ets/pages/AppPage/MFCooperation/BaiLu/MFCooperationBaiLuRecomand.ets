@@ -26,7 +26,7 @@ class MFCooperationRecomandHeader {
   }
 }
 
-class MFCooperationRecommandModel {
+export  class MFCooperationRecommandModel {
   tabKey:string = ''
   menuKey:string = ''
   imgUrl:string = ''
@@ -67,7 +67,7 @@ export struct MFCooperationBaiLuRecomand {
     [
     //公司新闻
       new MFCooperationRecommandModel('MF_NEWS','','','https://baidu.com','2024-8-1','文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1文章1','','这是作者1',''),
-      new MFCooperationRecommandModel('MF_NEWS','','','https://baidu.com','2024-8-1','文章2','','这是作者1',''),
+      new MFCooperationRecommandModel('MF_NEWS','','  ','https://baidu.com','2024-8-1','文章2','','这是作者1',''),
       new MFCooperationRecommandModel('MF_NEWS','','','https://baidu.com','2024-8-1','文章3','','这是作者1','')
     ],
     [
@@ -250,7 +250,7 @@ export struct MFCooperationBaiLuRecomand {
             .fontSize(16)
             .fontWeight(400)
             .fontColor(0x111A34)
-            .margin({right:40,bottom:11})
+            .margin({bottom:11})
             .textAlign(TextAlign.Start)
 
           Row(){
@@ -282,9 +282,21 @@ export struct MFCooperationBaiLuRecomand {
       .justifyContent(FlexAlign.Start)
       .alignItems(HorizontalAlign.Start)
 
-      Image($r('app.media.MFRecomandCellHeightArrow'))
-        .width(16)
-        .height(16)
+      if(headerModel.imgUrl === ''){
+        Image($r('app.media.MFRecomandCellHeightArrow'))
+          .width(16)
+          .height(16)
+          .margin({
+            left:39,
+          })
+      }else{
+        Image($r('app.media.login_eyes_close'))
+          .width(64)
+          .height(64)
+          .margin({
+            left:19,
+          })
+      }
     }.margin({left:20,right:25,top:16,bottom:0})
     .padding({bottom:15})
     .alignItems(VerticalAlign.Center)
@@ -347,7 +359,7 @@ export struct MFCooperationBaiLuRecomand {
           ForEach(this.listArr ,(item:MFCooperationRecommandModel[],index:number)=>{
             this.getSectionItem(item)
           })
-        }
+        }.divider({color:0x14000000,strokeWidth:0.5,startMargin:20,endMargin:20})
         // .divider({color:0x14000000,strokeWidth:0.5,startMargin:20,endMargin:25})
 
 

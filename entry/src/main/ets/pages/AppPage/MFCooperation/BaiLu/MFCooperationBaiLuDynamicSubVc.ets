@@ -5,7 +5,7 @@ import { MFCooperationRecommandModel } from './MFCooperationBaiLuRecomand';
 
 @Entry
 @Component
-export struct MFCooperationBaiLuNews {
+export  struct MFCooperationBaiLuDynamicSubVc {
 
   @State message: string = 'Hello World';
 
@@ -15,19 +15,19 @@ export struct MFCooperationBaiLuNews {
     new MFCooperationRecommandModel('MF_NEWS','','','https://baidu.com','2024-8-1','文章2','','这是作者1',''),
     new MFCooperationRecommandModel('MF_NEWS','','','https://baidu.com','2024-8-1','文章3','','这是作者1',''),
 
-      new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章1','','这是作者2',''),
-      new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章2','','这是作者2',''),
-      new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章3','','这是作者2',''),
+    new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章1','','这是作者2',''),
+    new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章2','','这是作者2',''),
+    new MFCooperationRecommandModel('NOTICE','','','https://baidu.com','2024-7-1','文章3','','这是作者2',''),
 
-      new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章1','','这是作者3',''),
-      new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章2','','这是作者3',''),
-      new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章3','','这是作者3',''),
-      new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章1','','这是作者4',''),
-      new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章2','','这是作者4',''),
-      new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章3','','这是作者4',''),
-      new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章1','','这是作者5',''),
-      new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章2','','这是作者5',''),
-      new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章3','','这是作者5',''),
+    new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章1','','这是作者3',''),
+    new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章2','','这是作者3',''),
+    new MFCooperationRecommandModel('AVIATION_NEWS','','','https://baidu.com','2024-6-1','文章3','','这是作者3',''),
+    new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章1','','这是作者4',''),
+    new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章2','','这是作者4',''),
+    new MFCooperationRecommandModel('TRENDS','','','https://baidu.com','2024-5-1','文章3','','这是作者4',''),
+    new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章1','','这是作者5',''),
+    new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章2','','这是作者5',''),
+    new MFCooperationRecommandModel('KNOWLEDGE_CENTER','','','https://baidu.com','2024-4-1','文章3','','这是作者5',''),
   ]
 
   build() {
