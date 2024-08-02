@@ -68,7 +68,7 @@ export struct MFCooperationBaiLuDynamic {
           TabContent(){
             MFCooperationBaiLuDynamicSubVc({message:item});
             // MFCooperationVc({message:'协作'});
-          }
+          }.margin({bottom:30})
         })
       }.vertical(false)
       .barHeight(0)

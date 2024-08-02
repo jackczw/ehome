@@ -67,19 +67,19 @@ export struct MFCooperationBaiLuVc {
         TabContent(){
           MFCooperationBaiLuRecomand({message:'推荐'})
           // MFCooperationVc({message:'协作'});
-        }
+        }.margin({bottom:52})
         // .tabBar(this.tabBuilder('协作',0))
 
         TabContent(){
           MFCooperationBaiLuNews({message:'新闻'});
           // MFCooperationBaiLuVc({message:'管理'});
-        }
+        }.margin({bottom:52})
         // .tabBar(this.tabBuilder('管理',1))
 
         TabContent(){
           MFCooperationBaiLuDynamic({message:'动态'});
           // MFCooperationYuGongVc({message:'白鹭之窗'})
-        }
+        }.margin({bottom:52})
         // .tabBar(this.tabBuilder('白鹭之窗',2))
       }.vertical(false)
       .barHeight(0)
