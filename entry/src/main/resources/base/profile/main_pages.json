@@ -12,6 +12,7 @@
     "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuRecomand",
     "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuNews",
     "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuDynamic",
-    "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuDynamicSubVc"
+    "pages/AppPage/MFCooperation/BaiLu/MFCooperationBaiLuDynamicSubVc",
+    "pages/AppPage/MFCooperation/Search/MFBaiLuZhiChuanSearch"
   ]
 }

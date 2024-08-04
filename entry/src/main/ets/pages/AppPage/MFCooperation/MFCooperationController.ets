@@ -2,15 +2,16 @@ import {MFCooperationVc} from './MFCooperationVc'
 import {MFCooperationBaiLuVc} from './MFCooperationBaiLuVc'
 import {MFCooperationYuGongVc} from './MFCooperationYuGongVc'
 import { DialogUtil, ToastUtil } from '@yunkss/eftool';
-
+import { router } from '@kit.ArkUI';
 
 
 ///自定义弹窗
 @CustomDialog
 struct MFBaiLuZhiChuanCustomView {
+  settingMenus:string[] = [];
   controller?:CustomDialogController
   build() {
-      Column(){
+      Stack({alignContent:Alignment.TopStart}){
         Row(){
           Text('设置栏目')
             .width('100%')
@@ -31,11 +32,51 @@ struct MFBaiLuZhiChuanCustomView {
             .width(64)
             .height(64)
             .position({right:0,top:0})
-
-
-
         }.height(64)
         .alignItems(VerticalAlign.Center)
+
+        Grid(){
+          ForEach(this.settingMenus,(item:string,index:number)=>{
+            GridItem(){
+              Button(item,{buttonStyle:ButtonStyleMode.TEXTUAL,type:ButtonType.Normal}).border({
+                radius:4
+              })
+              .fontSize(12)
+              .fontWeight(400)
+              .fontColor(0x3390FF)
+              .width(88)
+              .height(28)
+              .backgroundColor(0x1a3390FF)
+
+
+            }
+          })
+        }.columnsTemplate('1fr 1fr 1fr')
+        // .columnsGap(35)
+        .rowsGap(30)
+        .position({left:0,right:0,top:92})
+        .margin({left:20,right:20})
+        .height(181)
+        .scrollBar(BarState.Off)
+
+        Button(){
+          Text('保存')
+            .fontColor(Color.White)
+            .fontSize(16)
+            .fontWeight(400)
+            .width('100%')
+            .textAlign(TextAlign.Center)
+        }
+        .backgroundColor(0xff3390FF)
+        .border({
+            radius:4
+        })
+        .height(50)
+        .position({left:0,right:0,top:297})
+        .margin({left:24,right:24})
+        .onTouch((event:TouchEvent)=>{
+
+        })
       }
       .margin({ bottom: 10 })
   }
@@ -51,9 +92,12 @@ export  struct MFCooperationController {
   @State tabbars:string[] = [
     '协作','白鹭之窗','员工商城'
   ]
+  @State settingMenus:string[] = [
+    '公司新闻公','公告通知','航空报','动态','知识中心','公司新闻','公告通知','航空报','动态','知识中心','公司新闻','公告通知','航空报','动态','知识中心'
+  ]
   private  scroller: Scroller = new Scroller();
   mfDailogView:CustomDialogController = new CustomDialogController({
-    builder:MFBaiLuZhiChuanCustomView(),
+    builder:MFBaiLuZhiChuanCustomView({settingMenus:this.settingMenus}),
     autoCancel:true,
     height:371,
     width:'100%',
@@ -131,7 +175,8 @@ export  struct MFCooperationController {
         .height(44)
         .width(44)
         .onClick((event:ClickEvent)=>{
-          DialogUtil.showDialog({msg:'搜索'})
+          router.pushUrl({url:'pages/AppPage/MFCooperation/Search/MFBaiLuZhiChuanSearch',params:{'a':'1111'}})
+          // DialogUtil.showDialog({msg:'搜索'})
         })
         .position({top:7,right:0})
       }
