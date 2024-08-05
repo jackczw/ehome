@@ -1,10 +1,80 @@
+import { DialogUtil, Logger, ToastUtil } from '@yunkss/eftool';
+
+class HistoryModel{
+  maxX:number = 0;
+  lastIndex:number = 0;
+  currentWidth:number = 0;
+
+  constructor(maxX:number,lastIndex:number,currentWidth:number) {
+    this.maxX = maxX;
+    this.lastIndex = lastIndex;
+    this.currentWidth = currentWidth;
+  }
+}
+
+
 @Entry
 @Component
 export  struct MFBaiLuZhiChuanSearch {
   @State message: string = '白鹭搜索';
-  @State history:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经经经经经理塑料袋...','塑料袋副经理']
+  @State history:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经经经经经理塑料袋','塑料袋副经理',"1","2"]
+
+  //屏幕宽度
+  screenWidth:number = 360;
+  //flex可用宽度
+  flexWidht = this.screenWidth - 48;
+  //flex最大高度
+  @State flexHeight:number = 20+48*5;
+
+  @State lineWidth:HistoryModel[] = [];
+  currentMaxX:number = 0;
+  @State expand:boolean = false;
+  @State indexForexpandbt:number = -1;
+  @State textStr:string = '';
+  @State expandBtWidth:number = 44;
+
 
   textControler:TextInputController = new TextInputController();
+
+  proccessHistoryTextLength(text:string){
+    if(text.length>9){
+      return text.substring(0,9)+'...'
+    }
+    return text
+  }
+
+  getTextLength(text:string){
+    if(this.expand){//
+      this.history.forEach((value:String,index:Number)=>{
+        // this.proccessHistoryTextLength(value);
+      })
+    }else{
+
+    }
+  }
+
+  getFlexHeight(){
+    let linelength = this.lineWidth.length;
+    let height = 20 + 48*linelength;
+
+    if(this.lineWidth.length>2){
+
+      if(this.expand==false){
+        let md:HistoryModel = this.lineWidth[1];
+        if((md.maxX+40)>this.flexWidht){
+
+        }
+        this.indexForexpandbt =  md.lastIndex;
+        this.flexHeight = 20 + 48*2;
+      }else{
+        let linelength = this.lineWidth.length;
+        let md:HistoryModel = this.lineWidth[linelength-1];
+        this.indexForexpandbt =  md.lastIndex;
+        this.flexHeight = 20 + 48*linelength;
+      }
+    }
+  }
+
   build() {
     Column(){
       Row(){
@@ -18,7 +88,13 @@ export  struct MFBaiLuZhiChuanSearch {
 
               })
               .onChange((value:string)=>{
-
+                  this.textStr = value;
+              })
+              .onSubmit((enterkey:EnterKeyType,event:SubmitEvent)=>{
+                this.lineWidth = [];
+                this.currentMaxX = 0;
+                this.indexForexpandbt = -1;
+                this.history.unshift(this.textStr);
               })
 
           Image($r('app.media.MFBaiLuSearchSearchTextImage'))
@@ -41,6 +117,24 @@ export  struct MFBaiLuZhiChuanSearch {
         }.width(64)
         .height(36)
         .position({top:0,right:0})
+        .onClick((event:ClickEvent)=>{
+          let arr = this.history;
+
+          this.history = [];
+          setTimeout(()=>{
+            this.lineWidth = [];
+            this.currentMaxX = 0;
+            this.indexForexpandbt = -1;
+
+            this.history= arr;
+
+
+
+            this.expand = !this.expand;
+          },500)
+
+
+        })
       }
 
 
@@ -61,31 +155,196 @@ export  struct MFBaiLuZhiChuanSearch {
 
         Flex({wrap:FlexWrap.Wrap}){
           ForEach(this.history,(item:string,index:number)=>{
-            Button({type:ButtonType.Normal,buttonStyle:ButtonStyleMode.TEXTUAL}){
-              Text(item)
-                .fontSize(14)
-                .fontWeight(400)
-                .fontColor(0xff111A34)
-                .padding({left:12,right:12})
-              // .height(24)
-              // .maxLines(1)
-            }.height(36)
-            .margin({right:16,bottom:16})
-            .border({
-              radius:18,
-              width:1,
-              color:0xffEAEAEA
-            })
-            .onClick((event:ClickEvent)=>{
+            if(this.indexForexpandbt >0 && this.indexForexpandbt == index) {
+              Button({type:ButtonType.Normal}){
+                Row(){
+                  Row(){
+                    Image(this.expand?$r('app.media.MFBaiLuSearchHistoryArrowUp'):$r('app.media.MFBaiLuSearchHistoryArrowDown'))
+                      .width(16)
+                      .height(16)
+                  }.height(32)
+                  .justifyContent(FlexAlign.Center)
+                  .width(44)
+                  .border({
+                    radius:16,
+                    width:1,
+                    color:0xffEAEAEA
+                  })
+                }.width('100%')
+                  // .padding({left:12,right:12})
+              }
+              .width(this.expandBtWidth)
+              .backgroundColor(Color.White)
+              .margin({right:16,bottom:16})
+              .onClick((event:ClickEvent)=>{
+                let arr = this.history;
+                this.history = [];
+                setTimeout(()=>{
+                  this.lineWidth = [];
+                  this.currentMaxX = 0;
+                  this.indexForexpandbt = -1;
+
+                  this.history= arr;
+                  this.expand = !this.expand;
+                },100)
+              })
+              Blank().layoutWeight(1)
+            }else{
+              Button({type:ButtonType.Normal,buttonStyle:ButtonStyleMode.TEXTUAL}){
+                // if(this.indexForexpandbt >0 && this.indexForexpandbt == index) {
+                //   Text("E")
+                //     // .width(16)
+                //     // .height(16)
+                //     .textAlign(TextAlign.Center)
+                //     .fontSize(14)
+                //     .fontWeight(400)
+                //     .fontColor(0xff111A34)
+                //     .padding({left:12,right:12})
+                //   // Image($r('app.media.MFMineYunShiTangArrow'))
+                //   //   .width(16)
+                //   //   .height(16)
+                //   //   .padding({left:12,right:12})
+                // }else{
+                  Text(this.proccessHistoryTextLength(item))
+                    .fontSize(14)
+                    .fontWeight(400)
+                    .fontColor(0xff111A34)
+                    .padding({left:12,right:12})
+                // }
 
 
-            })
+
+                // .height(24)
+                // .maxLines(1)
+              }.height(32)
+              .onSizeChange((old,newvalue:SizeOptions)=>{
+                if(index==0){
+                  this.currentMaxX = 0
+                  this.expandBtWidth = 0;
+                }
+                if(newvalue.width){
+                  let width = (Number(newvalue.width.toString())+16);
+                  if((this.currentMaxX+width) > this.flexWidht){
+                    this.lineWidth.push(new HistoryModel(this.currentMaxX,index-1,Number(newvalue.width.toString())));
+                    this.currentMaxX = width;
+                  }else{
+                    this.currentMaxX = width+this.currentMaxX;
+                  }
+                  if(index == this.history.length-1) {
+                    this.lineWidth.push(new HistoryModel(this.currentMaxX,index,Number(newvalue.width.toString())));
+                  }
+                }
+
+
+                console.log(`index:${index}   `+ this.proccessHistoryTextLength(item) + '     宽度变化'+`${newvalue.width}`)
+                if(index == this.history.length-1){
+                  console.log('进来了')
+                  console.log(JSON.stringify(this.lineWidth));
+                  if(this.lineWidth.length>2){
+
+                    if(this.expand==false){
+                      let md:HistoryModel = this.lineWidth[1];
+                      // if((md.maxX+44)<this.flexWidht){
+                      //   this.indexForexpandbt =  md.lastIndex;
+                      // }else{
+                      //   this.indexForexpandbt =  md.lastIndex+1;
+                      // }
+                      this.expandBtWidth =  md.currentWidth;
+                      this.indexForexpandbt =  md.lastIndex;
+
+                      this.flexHeight = 20 + 48*2;
+                    }else{
+                      let linelength = this.lineWidth.length;
+                      if(linelength>5){
+                        linelength = 5;
+                      }
+                      let md:HistoryModel = this.lineWidth[linelength-1];
+                      this.expandBtWidth =  md.currentWidth;
+                      if((md.maxX+44)>this.flexWidht) {
+
+                      }else{
+
+                      }
+                      this.indexForexpandbt =  md.lastIndex;
+                      this.flexHeight = 20 + 48*linelength;
+                    }
+                  }
+                  this.lineWidth.forEach((value: HistoryModel, index: number, array: HistoryModel[]) => {
+
+                  });
+                }
+              })
+              .margin({right:16,bottom:16})
+              .border({
+                radius:16,
+                width:1,
+                color:0xffEAEAEA
+              })
+              .onClick((event:ClickEvent)=>{
+                if(this.history.length > index){
+                  let str = this.history[index];
+                  this.history.splice(index,1);
+                  this.history.unshift(str);
+
+                  let arr = this.history;
+                  this.lineWidth = [];
+                  this.currentMaxX = 0;
+                  this.indexForexpandbt = -1;
+                  this.history = [];
+
+                  setTimeout(()=>{
+                    this.lineWidth = [];
+                    this.currentMaxX = 0;
+                    this.indexForexpandbt = -1;
+
+                    this.history= arr;
+                  },100)
+
+                }
+
+
+
+              })
+            }
+
           })
         }
+        .height(this.flexHeight)
         .padding({top:20,left:24,right:24})
         .width('100%')
+        .clip(true)
+        .onSizeChange((old,newvalue)=>{
+          console.log('系统宽度'+`${newvalue.width}`)
+        })
+
+        // Button({type:ButtonType.Normal}){
+        //   Image(this.expand?$r('app.media.MFBaiLuSearchHistoryArrowUp'):$r('app.media.MFBaiLuSearchHistoryArrowDown'))
+        //     .width(16)
+        //     .height(16)
+        //   // .padding({left:12,right:12})
+        // }.height(32)
+        // .width(44)
+        // .backgroundColor(Color.White)
+        // .border({
+        //   radius:16,
+        //   width:1,
+        //   color:0xffEAEAEA
+        // })
+        // .position({bottom:16,right:24})
 
       }.margin({top:39})
+      .onClick((event:ClickEvent)=>{
+        let arr = this.history;
+        this.history = [];
+        setTimeout(()=>{
+          this.lineWidth = [];
+          this.currentMaxX = 0;
+          this.indexForexpandbt = -1;
+
+          this.history= arr;
+          this.expand = !this.expand;
+        },100)
+      })
 
 
     }.margin({top:20})
