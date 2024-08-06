@@ -1,4 +1,5 @@
 import { DialogUtil, Logger, ToastUtil } from '@yunkss/eftool';
+import { router } from '@kit.ArkUI';
 
 class HistoryModel{
   maxX:number = 0;
@@ -32,6 +33,8 @@ export  struct MFBaiLuZhiChuanSearch {
   @State indexForexpandbt:number = -1;
   @State textStr:string = '';
   @State expandBtWidth:number = 44;
+  @State widthArr:number[] = [];
+  @State isNeedShowHistory:boolean = true;
 
 
   textControler:TextInputController = new TextInputController();
@@ -91,10 +94,35 @@ export  struct MFBaiLuZhiChuanSearch {
                   this.textStr = value;
               })
               .onSubmit((enterkey:EnterKeyType,event:SubmitEvent)=>{
-                this.lineWidth = [];
-                this.currentMaxX = 0;
-                this.indexForexpandbt = -1;
-                this.history.unshift(this.textStr);
+                // this.lineWidth = [];
+                // this.currentMaxX = 0;
+                // this.indexForexpandbt = -1;
+                // this.history.unshift(this.textStr);
+                if(this.textStr.length > 0){
+                  this.history.unshift(this.textStr);
+                  let arr = this.history;
+                  this.lineWidth = [];
+                  this.widthArr = [];
+                  this.currentMaxX = 0;
+                  this.indexForexpandbt = -1;
+                  this.expandBtWidth = 44;
+                  this.history = [];
+
+                  setTimeout(()=>{
+                    this.lineWidth = [];
+                    this.widthArr = [];
+                    this.currentMaxX = 0;
+                    this.indexForexpandbt = -1;
+                    this.expandBtWidth = 44;
+
+                    this.history = arr;
+                    this.isNeedShowHistory = true;
+                  },200)
+                }else{
+                  ToastUtil.showToast('请输入搜索内容');
+                }
+
+
               })
 
           Image($r('app.media.MFBaiLuSearchSearchTextImage'))
@@ -118,40 +146,45 @@ export  struct MFBaiLuZhiChuanSearch {
         .height(36)
         .position({top:0,right:0})
         .onClick((event:ClickEvent)=>{
-          let arr = this.history;
-
-          this.history = [];
-          setTimeout(()=>{
-            this.lineWidth = [];
-            this.currentMaxX = 0;
-            this.indexForexpandbt = -1;
-
-            this.history= arr;
-
-
-
-            this.expand = !this.expand;
-          },500)
-
-
+            router.back();
         })
       }
 
 
       Column(){
-        Row(){
-          Text('历史记录')
-            .fontSize(14)
-            .fontWeight(500)
-            .fontColor(0xff111A34)
-            .margin({left:24})
+        if(this.isNeedShowHistory){
+          Row(){
+            Text('历史记录')
+              .fontSize(14)
+              .fontWeight(500)
+              .fontColor(0xff111A34)
+              .margin({left:24})
 
-          Image($r('app.media.MFBaiLuSearchDeleteBt'))
-            .width(16)
-            .height(16)
-            .position({right:24,top:3})
+            Image($r('app.media.MFBaiLuSearchDeleteBt'))
+              .width(16)
+              .height(16)
+              .position({right:24,top:3})
 
-        }.width('100%')
+
+
+          }.width('100%')
+
+          Button({buttonStyle:ButtonStyleMode.TEXTUAL})
+            .width(60)
+            .height(60)
+            .position({top:0,right:0})
+            .onClick((event:ClickEvent)=>{
+              ToastUtil.showToast('删除');
+              this.lineWidth = [];
+              this.widthArr = [];
+              this.currentMaxX = 0;
+              this.indexForexpandbt = -1;
+              this.expandBtWidth = 44;
+              this.history = [];
+              this.isNeedShowHistory = false;
+            })
+        }
+
 
         Flex({wrap:FlexWrap.Wrap}){
           ForEach(this.history,(item:string,index:number)=>{
@@ -178,54 +211,51 @@ export  struct MFBaiLuZhiChuanSearch {
               .margin({right:16,bottom:16})
               .onClick((event:ClickEvent)=>{
                 let arr = this.history;
+                this.lineWidth = [];
+                this.widthArr = [];
+                this.currentMaxX = 0;
+                this.indexForexpandbt = -1;
+                this.expandBtWidth = 44;
                 this.history = [];
+
                 setTimeout(()=>{
+                  this.expand = !this.expand;
                   this.lineWidth = [];
+                  this.widthArr = [];
                   this.currentMaxX = 0;
                   this.indexForexpandbt = -1;
+                  this.expandBtWidth = 44;
 
                   this.history= arr;
-                  this.expand = !this.expand;
-                },100)
+
+                },200)
               })
-              Blank().layoutWeight(1)
+
             }else{
               Button({type:ButtonType.Normal,buttonStyle:ButtonStyleMode.TEXTUAL}){
-                // if(this.indexForexpandbt >0 && this.indexForexpandbt == index) {
-                //   Text("E")
-                //     // .width(16)
-                //     // .height(16)
-                //     .textAlign(TextAlign.Center)
-                //     .fontSize(14)
-                //     .fontWeight(400)
-                //     .fontColor(0xff111A34)
-                //     .padding({left:12,right:12})
-                //   // Image($r('app.media.MFMineYunShiTangArrow'))
-                //   //   .width(16)
-                //   //   .height(16)
-                //   //   .padding({left:12,right:12})
-                // }else{
+
                   Text(this.proccessHistoryTextLength(item))
                     .fontSize(14)
                     .fontWeight(400)
                     .fontColor(0xff111A34)
                     .padding({left:12,right:12})
-                // }
 
-
-
-                // .height(24)
-                // .maxLines(1)
               }.height(32)
               .onSizeChange((old,newvalue:SizeOptions)=>{
                 if(index==0){
                   this.currentMaxX = 0
-                  this.expandBtWidth = 0;
+                  this.expandBtWidth = 44;
                 }
                 if(newvalue.width){
+                  this.widthArr.push(Number(newvalue.width.toString()));
                   let width = (Number(newvalue.width.toString())+16);
                   if((this.currentMaxX+width) > this.flexWidht){
-                    this.lineWidth.push(new HistoryModel(this.currentMaxX,index-1,Number(newvalue.width.toString())));
+                    if(this.widthArr.length > (index-1)){
+                      this.lineWidth.push(new HistoryModel(this.currentMaxX,index-1,this.widthArr[index-1]));
+                    }else{
+                      this.lineWidth.push(new HistoryModel(this.currentMaxX,index-1,Number(newvalue.width.toString())));
+                    }
+
                     this.currentMaxX = width;
                   }else{
                     this.currentMaxX = width+this.currentMaxX;
@@ -288,17 +318,20 @@ export  struct MFBaiLuZhiChuanSearch {
 
                   let arr = this.history;
                   this.lineWidth = [];
+                  this.widthArr = [];
                   this.currentMaxX = 0;
                   this.indexForexpandbt = -1;
+                  this.expandBtWidth = 44;
                   this.history = [];
 
                   setTimeout(()=>{
                     this.lineWidth = [];
+                    this.widthArr = [];
                     this.currentMaxX = 0;
                     this.indexForexpandbt = -1;
-
+                    this.expandBtWidth = 44;
                     this.history= arr;
-                  },100)
+                  },200)
 
                 }
 
@@ -317,34 +350,8 @@ export  struct MFBaiLuZhiChuanSearch {
           console.log('系统宽度'+`${newvalue.width}`)
         })
 
-        // Button({type:ButtonType.Normal}){
-        //   Image(this.expand?$r('app.media.MFBaiLuSearchHistoryArrowUp'):$r('app.media.MFBaiLuSearchHistoryArrowDown'))
-        //     .width(16)
-        //     .height(16)
-        //   // .padding({left:12,right:12})
-        // }.height(32)
-        // .width(44)
-        // .backgroundColor(Color.White)
-        // .border({
-        //   radius:16,
-        //   width:1,
-        //   color:0xffEAEAEA
-        // })
-        // .position({bottom:16,right:24})
-
       }.margin({top:39})
-      .onClick((event:ClickEvent)=>{
-        let arr = this.history;
-        this.history = [];
-        setTimeout(()=>{
-          this.lineWidth = [];
-          this.currentMaxX = 0;
-          this.indexForexpandbt = -1;
 
-          this.history= arr;
-          this.expand = !this.expand;
-        },100)
-      })
 
 
     }.margin({top:20})
