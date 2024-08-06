@@ -353,7 +353,130 @@ export  struct MFBaiLuZhiChuanSearch {
       }.margin({top:39})
 
 
+      Image($r('app.media.MFBaiLuSearchHot'))
+        .width(48)
+        .height(12)
+        .margin({left:19,bottom:16,top:30})
+
+
+    Column(){
+      Row(){
+        Image($r('app.media.MFBaiLuSearchHotDot1'))
+          .height(6)
+          .width(6)
+          .margin({right:16})
+        Text('111111111111111111111111111111111111111111111111111111111111111111111')
+          .padding({top:16,bottom:16,right:24})
+          .width('100%')
+      }.margin({left:24,right:24})
+      .border({
+        color:0x14000000,
+        style:BorderStyle.Solid,
+        width:{bottom:1}
+
+      })
+
+
+      Row(){
+        Image($r('app.media.MFBaiLuSearchHotDot2'))
+          .height(6)
+          .width(6)
+          .margin({right:16})
+        Text('222222222222222222222222222222222222222222222222222222222222222222222222222222222222')
+          .padding({top:16,bottom:16,right:24})
+          .width('100%')
+          .fontSize(14)
+          .fontWeight(400)
+          .fontColor(0xff111A34)
+      }.margin({left:24,right:24})
+      .border({
+        color:0x14000000,
+        style:BorderStyle.Solid,
+        width:{bottom:1}
+
+      })
+
+    }
+
+    ///搜索类别数据
+      List(){
+        ForEach(this.searchReslut,(item:string,index:number)=>{
+          ListItem(){
+            Row(){
+              Text(item)
+                .fontSize(16)
+                .fontWeight(400)
+                .fontColor(0xff111A34)
+                .padding({top:16,bottom:16})
+                .width('100%')
+            }.margin({left:20,right:25})
+            .border({
+              color:0x14000000,
+              style:BorderStyle.Solid,
+              width:{bottom:1}
+
+            })
+          }
+        })
+      }.position({left:0,top:58})
+      .backgroundColor(Color.White)
+      .width('100%')
+      .height('100%')
+
+      ///无数据
+      Column(){
+        Image($r('app.media.MFBaiLuSearcNOData'))
+          .width(149)
+          .height(149)
+          .margin({top:173})
+        // ///preveiw 似乎无法显示
+        // RichText('<p style="font-size: 35px;text-align: center;font-weight: bold; color: rgb(24,78,228)">字体大小35px,行高45px</p>')
+
+        Text('暂无搜索结果')
+          .fontSize(12)
+          .fontWeight(400)
+          .fontColor(0xffC5CAD5)
+          .margin({top:-29})
+      }.position({left:0,top:58})
+      .backgroundColor(Color.White)
+      .width('100%')
+      .height('100%')
 
     }.margin({top:20})
+    .alignItems(HorizontalAlign.Start)
+    .width('100%')
+    .height('100%')
+  }
+
+
+
+  ///匹配字符串中的词
+  findWordsWithPositions(str: string, word: string) {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi'); // 'g' 表示全局搜索，'i' 表示不区分大小写
+    let match:RegExpExecArray | null;
+    const positions: MFMatchModel[] = [];
+
+    while ((match = regex.exec(str)) !== null) {
+       // 注意：match[0] 是匹配的文本，match.index 是匹配项的位置
+
+      positions.push(new MFMatchModel(match.index,match[0]));
+
+        // 重要的是不要在这里使用 regex.lastIndex++，因为 exec 会自动处理它
+        // 如果你在循环中手动修改了 lastIndex，可能会导致意外的行为
+  }
+
+  return positions;
+}
+
+  @State searchReslut:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经袋副经经袋副经经袋副经经经经经经理塑料袋','塑料袋副经理',"1","2"]
+}
+
+class MFMatchModel{
+  index:number = 0;
+  word:string = ''
+
+  constructor(index:number,word:string) {
+    this.index = index;
+    this.word = word;
   }
 }
