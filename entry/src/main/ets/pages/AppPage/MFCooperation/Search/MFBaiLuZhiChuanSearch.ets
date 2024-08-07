@@ -14,11 +14,21 @@ class HistoryModel{
 }
 
 
+class MFMatchModel{
+  index:number = 0;
+  word:string = ''
+
+  constructor(index:number,word:string) {
+    this.index = index;
+    this.word = word;
+  }
+}
 @Entry
 @Component
 export  struct MFBaiLuZhiChuanSearch {
   @State message: string = '白鹭搜索';
   @State history:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经经经经经理塑料袋','塑料袋副经理',"1","2"]
+  @State searchReslut:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经袋副经经袋副经经袋副经经经经经经理塑料袋','塑料袋副经理',"1","2"]
 
   //屏幕宽度
   screenWidth:number = 360;
@@ -468,15 +478,4 @@ export  struct MFBaiLuZhiChuanSearch {
   return positions;
 }
 
-  @State searchReslut:string[] = ['塑料袋副经理','水电费','水电','不扣分点','代付款代付款代付款','塑料袋副经经袋副经经袋副经经袋副经经经经经经理塑料袋','塑料袋副经理',"1","2"]
-}
-
-class MFMatchModel{
-  index:number = 0;
-  word:string = ''
-
-  constructor(index:number,word:string) {
-    this.index = index;
-    this.word = word;
-  }
 }
